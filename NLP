@@ -1,0 +1,37 @@
+from  fuzzywuzzy import fuzz
+import  plotly
+import gensim
+import fuzzywuzzy
+import webcolors
+import pandas as pd
+import time
+
+#Casting the name column of both dataframes into lists
+df1_names = text1
+df2_names = text2
+#Defining a function to return the match and similarity score of the fuzz.ratio() scorer. The function will take in a term(name), list of terms(list_names), and a minimum similarity score(min_score) to return the match. 
+def match_names(name, list_names, min_score=0):
+    max_score = -1
+    max_name = ''
+    for x in list_names:
+        score = fuzz.ratio(name, x)
+        if (score > min_score) & (score > max_score):
+            max_name = x
+            max_score = score
+    return (max_name, max_score)
+#For loop to create a list of tuples with the first value being the name from the second dataframe (name to replace) and the second value from the first dataframe (string replacing the name value). Then, casting the list of tuples as a dictionary. names = []
+names = []
+for x in df1_names:
+    if type(x)==str and type(x):
+        match = match_names(x, df2_names, 85)
+        if match[1] >= 75:
+             name = ('(' + str(x), str(match[0]), str(match[1]) + ')')
+             names.append(name)
+           
+    
+name_dict1 = dict(names)
+names
+
+df = pd.DataFrame (names, columns = ['Ratio','Fname','Sname'])
+
+df.to_excel('/Users/fma/Documents/NLP/clean_word_ratio2.xlsx' ,encoding="utf-8")
